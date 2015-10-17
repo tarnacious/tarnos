@@ -3,5 +3,6 @@
 
 void write(char* text, int length);
 void writeln(char* text, int length);
+void clear();
 
 #endif /* INCLUDE_FB_H */

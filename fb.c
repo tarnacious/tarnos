@@ -47,20 +47,60 @@ void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg)
 	fb[i + 1] = ((fg & 0x0F) << 4) | (bg & 0x0F);
 }
 
+unsigned short fb_read(unsigned int i)
+{
+	short *fb = (short *) 0x000B8000;
+    return fb[i];
+}
+
+void fb_write(unsigned int i, unsigned short value)
+{
+	short *fb = (short *) 0x000B8000;
+    fb[i] = value;
+}
+
+void scroll() {
+    for(int i = 0; i < (FB_NUM_COLS * (FB_NUM_ROWS - 1)); i++) {
+        fb_write(i, fb_read(i + FB_NUM_COLS));
+    }
+}
+
+void clear() {
+    cursor_position = 0;
+    for(int i = 0; i < (FB_NUM_COLS * FB_NUM_ROWS); i++) {
+        fb_write(i, (FB_GREEN << 8));
+    }
+    fb_move_cursor(cursor_position);
+}
+
 void write(char* text, int length)
 {
 	for(int i = 0; i < length; i++) {
-		fb_write_cell(cursor_position * 2, text[i], FB_GREEN, FB_DARK_GREY);
+		fb_write_cell(cursor_position * 2, text[i], 0, FB_GREEN);
 		cursor_position++;
 	}
+    fb_move_cursor(cursor_position);
 }
 
 void writeln(char* text, int length)
 {
 	for(int i = 0; i < length; i++) {
-		fb_write_cell(cursor_position * 2, text[i], FB_GREEN, FB_DARK_GREY);
+		fb_write_cell(cursor_position * 2, text[i], 0, FB_GREEN);
 		cursor_position++;
 	}
     int offset = cursor_position % FB_NUM_COLS;
     cursor_position += FB_NUM_COLS - offset;
+
+    // extremely dodgy scrolling
+    if (cursor_position > FB_NUM_ROWS * FB_NUM_COLS) {
+        scroll();
+        cursor_position = (FB_NUM_ROWS - 1) * FB_NUM_COLS;
+
+        // clear the last line
+        for(int i = 0; i < FB_NUM_COLS; i++) {
+            fb_write( (FB_NUM_ROWS-1) * FB_NUM_COLS - 2 + i, (FB_GREEN << 8));
+        }
+    }
+
+    fb_move_cursor(cursor_position);
 }
