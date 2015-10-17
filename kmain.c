@@ -5,11 +5,11 @@
 int kmain()
 {
 	clear();
-	char message[6] = {'t', 'a', 'r', 'n', 'o', 's'};
+	char message[] = "tarnos";
 	writeln(message, 6);
 
 	serial_init();
-	char log[6] = {'h', 'e', 'l', 'l', 'o', '!'};
+	char log[] = "hello!";
 	serial_write(log, 6);
 
 	for(int i = 0; i < 25; i++) {
@@ -19,7 +19,7 @@ int kmain()
 	}
 
 
-	char prompt[4] = {'o', 'k', '>', ' '};
+	char prompt[] = "ok> ";
 	write(prompt, 4);
     return 0;
 }
