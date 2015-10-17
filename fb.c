@@ -61,4 +61,6 @@ void writeln(char* text, int length)
 		fb_write_cell(cursor_position * 2, text[i], FB_GREEN, FB_DARK_GREY);
 		cursor_position++;
 	}
+    int offset = cursor_position % FB_NUM_COLS;
+    cursor_position += FB_NUM_COLS - offset;
 }
