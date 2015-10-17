@@ -6,21 +6,21 @@ int kmain()
 {
 	clear();
 	char message[] = "tarnos";
-	writeln(message, 6);
+	writeln(message);
 
 	serial_init();
 	char log[] = "hello!";
-	serial_write(log, 6);
+	serial_write(log);
 
 	for(int i = 0; i < 25; i++) {
 		char line[3] = { '0' + (i % 10), ':', ' ' };
-		write(line, 3);
-		writeln(message, 6);
+		write(line);
+		writeln(message);
 	}
 
 
 	char prompt[] = "ok> ";
-	write(prompt, 4);
+	write(prompt);
     return 0;
 }
 

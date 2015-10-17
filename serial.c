@@ -80,12 +80,11 @@ void serial_write_char(unsigned char data)
 }
 
 
-void serial_write(char* text, short length) {
-    for(int i = 0; i < length; i++) {
-        serial_write_char(text[i]);
+void serial_write(char* text) {
+    while(*text != '\0') {
+        serial_write_char(*text);
+        text++;
     }
-    //while(*text != '!') {
-    //    serial_write_char(*text);
-    //    text++;
-    //}
+    serial_write_char('\r');
+    serial_write_char('\n');
 }

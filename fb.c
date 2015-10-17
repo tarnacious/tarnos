@@ -73,21 +73,23 @@ void clear() {
     fb_move_cursor(cursor_position);
 }
 
-void write(char* text, int length)
+void write(char* text)
 {
-	for(int i = 0; i < length; i++) {
-		fb_write_cell(cursor_position * 2, text[i], 0, FB_GREEN);
+    while(*text != '\0') {
+		fb_write_cell(cursor_position * 2, *text, 0, FB_GREEN);
 		cursor_position++;
-	}
+        text++;
+    }
     fb_move_cursor(cursor_position);
 }
 
-void writeln(char* text, int length)
+void writeln(char* text)
 {
-	for(int i = 0; i < length; i++) {
-		fb_write_cell(cursor_position * 2, text[i], 0, FB_GREEN);
+    while(*text != '\0') {
+		fb_write_cell(cursor_position * 2, *text, 0, FB_GREEN);
 		cursor_position++;
-	}
+        text++;
+    }
     int offset = cursor_position % FB_NUM_COLS;
     cursor_position += FB_NUM_COLS - offset;
 
