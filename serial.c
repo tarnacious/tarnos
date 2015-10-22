@@ -1,4 +1,5 @@
 #include "serial.h"
+#include "stdint.h"
 #include "io.h"
 
 /* The I/O ports */
@@ -34,7 +35,7 @@
  *  @param com      The COM port to configure
  *  @param divisor  The divisor
  */
-void serial_configure_baud_rate(unsigned short com, unsigned short divisor)
+void serial_configure_baud_rate(uint16_t com, uint16_t divisor)
 {
     outb(SERIAL_LINE_COMMAND_PORT(com),
          SERIAL_LINE_ENABLE_DLAB);
@@ -51,7 +52,7 @@ void serial_configure_baud_rate(unsigned short com, unsigned short divisor)
  *
  *  @param com  The serial port to configure
  */
-void serial_configure_line(unsigned short com)
+void serial_configure_line(uint16_t com)
 {
     /* Bit:     | 7 | 6 | 5 4 3 | 2 | 1 0 |
      * Content: | d | b | prty  | s | dl  |
@@ -60,7 +61,7 @@ void serial_configure_line(unsigned short com)
     outb(SERIAL_LINE_COMMAND_PORT(com), 0x03);
 }
 
-int serial_is_transmit_fifo_empty(unsigned int com)
+int serial_is_transmit_fifo_empty(uint32_t com)
 {
     /* 0x20 = 0010 0000 */
     return inb(SERIAL_LINE_STATUS_PORT(com)) & 0x20;
@@ -72,7 +73,7 @@ void serial_init()
     serial_configure_line(SERIAL_COM1_BASE);
 }
 
-void serial_write_char(unsigned char data)
+void serial_write_char(uint8_t data)
 {
     while (!serial_is_transmit_fifo_empty(SERIAL_COM1_BASE)) {
     }

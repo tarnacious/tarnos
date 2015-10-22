@@ -5,22 +5,13 @@
 int kmain()
 {
 	clear();
-	char message[] = "tarnos";
+	char message[] = "tarnos!";
 	writeln(message);
 
 	serial_init();
-	char log[] = "hello!";
+	char log[] = "System started!";
 	serial_write(log);
 
-	for(int i = 0; i < 25; i++) {
-		char line[3] = { '0' + (i % 10), ':', ' ' };
-		write(line);
-		writeln(message);
-	}
-
-
-	char prompt[] = "ok> ";
-	write(prompt);
     return 0;
 }
 

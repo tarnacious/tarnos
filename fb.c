@@ -1,4 +1,5 @@
 #include "fb.h"
+#include "stdint.h"
 #include "io.h"
 
 #define FB_GREEN     2
@@ -16,14 +17,14 @@
 #define FB_NUM_COLS 80
 #define FB_NUM_ROWS 25
 
-unsigned short cursor_position;
+uint16_t cursor_position;
 
 /** fb_move_cursor:
  *  Moves the cursor of the framebuffer to the given position
  *
  *  @param pos The new position of the cursor
  */
-void fb_move_cursor(unsigned short pos)
+void fb_move_cursor(uint16_t pos)
 {
 	outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
 	outb(FB_DATA_PORT,    ((pos >> 8) & 0x00FF));
@@ -40,20 +41,20 @@ void fb_move_cursor(unsigned short pos)
  *  @param fg The foreground color
  *  @param bg The background color
  */
-void fb_write_cell(unsigned int i, char c, unsigned char fg, unsigned char bg)
+void fb_write_cell(uint32_t i, char c, uint8_t fg, unsigned char bg)
 {
 	char *fb = (char *) 0x000B8000;
 	fb[i] = c;
 	fb[i + 1] = ((fg & 0x0F) << 4) | (bg & 0x0F);
 }
 
-unsigned short fb_read(unsigned int i)
+uint16_t fb_read(uint32_t i)
 {
 	short *fb = (short *) 0x000B8000;
     return fb[i];
 }
 
-void fb_write(unsigned int i, unsigned short value)
+void fb_write(uint32_t i, uint16_t value)
 {
 	short *fb = (short *) 0x000B8000;
     fb[i] = value;
