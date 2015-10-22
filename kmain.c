@@ -1,5 +1,6 @@
 #include "fb.h"
 #include "serial.h"
+#include "gdt.h"
 
 
 int kmain()
@@ -11,6 +12,8 @@ int kmain()
 	serial_init();
 	char log[] = "System started!";
 	serial_write(log);
+
+    gdt_init();
 
     return 0;
 }
