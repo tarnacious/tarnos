@@ -84,6 +84,54 @@ void write(char* text)
     fb_move_cursor(cursor_position);
 }
 
+void write_hex_header() {
+    fb_write_cell(cursor_position * 2, '0', 0, FB_GREEN);
+    cursor_position++;
+    fb_write_cell(cursor_position * 2, 'x', 0, FB_GREEN);
+    cursor_position++;
+    fb_move_cursor(cursor_position);
+}
+
+void write_hex4(uint8_t value) {
+    if (value < 10) {
+		fb_write_cell(cursor_position * 2, '0' + value, 0, FB_GREEN);
+		cursor_position++;
+    } else if (value < 16) {
+		fb_write_cell(cursor_position * 2, 'A' + value - 10, 0, FB_GREEN);
+		cursor_position++;
+    } else {
+		fb_write_cell(cursor_position * 2, '?', 0, FB_GREEN);
+		cursor_position++;
+    }
+    fb_move_cursor(cursor_position);
+}
+
+void write_hex8_(uint8_t value) {
+    write_hex4((value & 0xF0) >> 4);
+    write_hex4(value & 0x0F);
+}
+
+void write_hex8(uint8_t value) {
+    write_hex_header();
+    write_hex8_(value);
+}
+
+void write_hex16_(uint16_t value) {
+    write_hex8_((value & 0xFF00) >> 8);
+    write_hex8_((value & 0x00FF));
+}
+
+void write_hex16(uint16_t value) {
+    write_hex_header();
+    write_hex16_(value);
+}
+
+void write_hex32(uint32_t value) {
+    write_hex_header();
+    write_hex16_((value & 0xFFFF0000) >> 16);
+    write_hex16_((value & 0x0000FFFF));
+}
+
 void writeln(char* text)
 {
     while(*text != '\0') {
